@@ -23,16 +23,24 @@
 
 <configuration>
 
-    <appender name="JSON_CONSOLE"
-              class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    <!-- Appender clásico de consola -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
     </appender>
 
-    <appender name="OTEL"
-              class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender"/>
+    <!-- Appender OpenTelemetry (opcional, si lo usas para trazas) -->
+    <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender"/>
 
+    <!-- Ajustes de nivel de log para librerías comunes -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="io.opentelemetry" level="WARN"/>
+
+    <!-- Root logger -->
     <root level="INFO">
-        <appender-ref ref="JSON_CONSOLE"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="OTEL"/>
     </root>
 
